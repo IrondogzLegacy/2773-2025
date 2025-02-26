@@ -25,14 +25,16 @@ public class TowerSubsystem extends SubsystemBase {
 
   }
 
-  //IMPORTANT: the elevator's range is from 0 to -20, with -20 being the top
+  // IMPORTANT: the elevator's range is from 0 to -20, with -20 being the top
   @Override
   public void periodic() {
     leftPID.setSetpoint(height);
-    double speed = MathUtil.clamp(leftPID.calculate(encoder.getPosition()), -Constants.MaxTowerSpeed, Constants.MaxTowerSpeed);
+    double speed = MathUtil.clamp(leftPID.calculate(encoder.getPosition()), -Constants.MaxTowerSpeed,
+        Constants.MaxTowerSpeed);
     motor.set(speed);
     motor2.set(-speed);
-    // System.out.println("Encoder: " + encoder.getPosition() + "; Height: " + height);
+    // System.out.println("Encoder: " + encoder.getPosition() + "; Height: " +
+    // height);
   }
 
   public void setHeight(double height) {
@@ -44,7 +46,12 @@ public class TowerSubsystem extends SubsystemBase {
   }
 
   public void setProportionalHeight(double d) {
-      setHeight(-(d*10+10));
+    setProportionalHeight(d, false);
+  }
+
+  public void setProportionalHeight(double d, boolean override) {
+    double h = override ? d * 1.25 : MathUtil.clamp(d * 1.25, -1, 1);
+    setHeight(-(h * 10 + 10));
   }
 
   public void zeroEncoders() {

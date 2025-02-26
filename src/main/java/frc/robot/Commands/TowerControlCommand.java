@@ -32,12 +32,15 @@ public class TowerControlCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    towerSub.setProportionalHeight(joy.getZ());
+    towerSub.setProportionalHeight(-joy.getZ(), joy.getRawButton(11));
     if (joy.getRawButton(7)) {
       climbSub.setSpeed(-0.15);
     }
     if (joy.getRawButton(6)) {
       climbSub.setSpeed(0.2);
+    }
+    if(joy.getRawButton(11) && joy.getRawButtonPressed(10)) {
+      towerSub.zeroEncoders();
     }
   }
 
